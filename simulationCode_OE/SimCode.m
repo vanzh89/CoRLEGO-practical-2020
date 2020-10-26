@@ -6,7 +6,8 @@ clear all;
 close all;
 clc;
 %Pick the image for target selection
-pwd = '/Users/fzhang/MATLAB/projects/CoRLEGO-practical-2020/simulationCode_OE/images_30';
+currentFolder = pwd;
+selpath = uigetdir(pwd);
 %randperm()
 imageNames={'redTargetOnTheLeft.png',...
     'redTargetInTheMiddle.png','redTargetOnTheRight.png','greenTargetOnTheLeft.png',...
@@ -36,7 +37,8 @@ sim = Simulator();
 
 
 
-sim.addElement(ModifiedImageLoader('targetImage',pwd,imageNames,fieldSize,currentSelection));
+
+sim.addElement(ModifiedImageLoader('targetImage',[selpath],imageNames,fieldSize,currentSelection));
 sim.init();
 
 % For tunning, input parameters can be controlled by sliders
