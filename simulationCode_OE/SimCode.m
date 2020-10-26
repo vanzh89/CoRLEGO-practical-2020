@@ -2,6 +2,7 @@ function SimCode(numberOfSet, breakTime)
 %% CORLEGO practical project 2020
 % adpated from MSc CNCR Thesis:A Dynamic Neural Architecture for Choice Reaching Tasks
 % Code for the simulation of the experiment
+% some changes
 if nargin==0
     gui_flag = true;
     breakTime=10;
