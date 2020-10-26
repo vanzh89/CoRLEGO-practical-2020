@@ -1,4 +1,4 @@
-function GUICode(numberOfSet, breakTime)
+function GUICode
 %% CORLEGO practical project 2020
 % adpated from MSc CNCR Thesis:A Dynamic Neural Architecture for Choice Reaching Tasks
 % Code for running GUI: demo & parameters tuning
@@ -38,9 +38,10 @@ amplitudeExc = 5;
 amplitudeGlobal_dd=-0.01;
 amplitudeGlobal_dv=-0.005;
 i=1;
+
+
+
 sim = Simulator();
-
-
 
 sim.addElement(ModifiedImageLoader('targetImage',[selpath],imageNames,fieldSize,currentSelection));
 sim.init();
@@ -279,7 +280,7 @@ for nOS=1:numberOfSet
     end
     
 end
-
+%%
 reorederedHistory=historyOfOrder(1,:);
 if numberOfSet>1
     for i=2:numberOfSet

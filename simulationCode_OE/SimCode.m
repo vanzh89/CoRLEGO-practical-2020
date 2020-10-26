@@ -20,7 +20,8 @@ imageNames={'redTargetOnTheLeft.png',...
     'redTargetInTheMiddle.png','redTargetOnTheRight.png','greenTargetOnTheLeft.png',...
     'greenTargetInTheMiddle.png','greenTargetOnTheRight.png','NoTargetImage.png'};
 
-fieldSize=[30, 30];
+
+fieldSize=[120, 120];
 currentSelection = 1; %
 
 %% setting up the simulator
@@ -190,7 +191,7 @@ end
 %%
 % ManyPeaksInVmap=0;
 if gui_flag == false
-setSize=6; %6 different target image
+setSize=1; %6 different target image
 numberOfSet=2; %it is changeable
 
 historyOfOrder=zeros(numberOfSet,setSize);
@@ -209,14 +210,14 @@ totalTime=zeros(numberOfTrial,1);
 
 
 
-for nOS=1:numberOfSet
+for nOS=1:1
     currentOrder=randperm(setSize);
     historyOfOrder(nOS,:)=currentOrder;
     currentOrder=historyOfOrder(nOS,:);
     
     for sS=1:setSize %sS stands for the set size
         
-        currentSelection=currentOrder(sS);
+        currentSelection=currentOrder(1);
         sim.setElementParameters('targetImage','currentSelection',currentSelection);
         initialLatencyWasMesured=false;
         trialIsDone=false;
