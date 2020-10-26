@@ -1,4 +1,4 @@
-function GUICode
+% function GUICode
 %% CORLEGO practical project 2020
 % adpated from MSc CNCR Thesis:A Dynamic Neural Architecture for Choice Reaching Tasks
 % Code for running GUI: demo & parameters tuning
@@ -18,7 +18,7 @@ imageNames={'redTargetOnTheLeft.png',...
     'redTargetInTheMiddle.png','redTargetOnTheRight.png','greenTargetOnTheLeft.png',...
     'greenTargetInTheMiddle.png','greenTargetOnTheRight.png','NoTargetImage.png'};
 
-fieldSize=[120, 120];
+fieldSize=[30, 30];
 currentSelection = 1; %
 
 %% setting up the simulator
@@ -185,112 +185,4 @@ if gui_flag == true
     gui.addControl(GlobalControlButton('Quit', gui, 'quitSimulation', true, false, false, 'quit simulation'), [20, 2]);
     sim.init();
     gui.run(inf);
-end
-%%
-% ManyPeaksInVmap=0;
-if gui_flag == false
-setSize=6; %6 different target image
-% numberOfSet=2; %it is changeable
-
-historyOfOrder=zeros(numberOfSet,setSize);
-breakImage=7; %7th image is a black image
-rateConstant=0.01;
-trialTime=1250;
-% breakTime=1;
-numberOfTrial=numberOfSet*setSize;
-handVelocity=zeros(trialTime,numberOfTrial);
-handPositionY=zeros(trialTime,numberOfTrial);
-handPositionX=zeros(trialTime,numberOfTrial);
-initialLatencyTime=zeros(numberOfTrial,1);
-movementTime=zeros(numberOfTrial,1);
-totalTime=zeros(numberOfTrial,1);
-
-
-
-
-for nOS=1:numberOfSet
-    currentOrder=randperm(setSize);
-    historyOfOrder(nOS,:)=currentOrder;
-    currentOrder=historyOfOrder(nOS,:);
-    
-    for sS=1:setSize %sS stands for the set size
-        
-        currentSelection=currentOrder(sS);
-        sim.setElementParameters('targetImage','currentSelection',currentSelection);
-        initialLatencyWasMesured=false;
-        trialIsDone=false;
-        sim.t=0;
-        for tT=1:trialTime
-            
-            sim.step();
-            velocity=sim.getComponent('velocityMap','output');
-            
-            if any(velocity(:)>0.5)
-                [rowPeakV,colPeakV]=find(velocity == max(velocity(:)));
-                
-                
-                handPositionY(tT,setSize*(nOS-1)+sS)=sim.getComponent('hand','positionY');
-                handPositionX(tT,setSize*(nOS-1)+sS)=sim.getComponent('hand','positionX');
-                sim.setElementParameters('hand','positionY',(handPositionY(tT,setSize*(nOS-1)+sS)+((rowPeakV-fieldSize(:,2)/2)*rateConstant)));
-                sim.setElementParameters('hand','positionX',(handPositionX(tT,setSize*(nOS-1)+sS)+((colPeakV-fieldSize(:,1)/2)*rateConstant)));
-                sim.setElementParameters('hand','rowPeakV',rowPeakV);
-                sim.setElementParameters('hand','colPeakV',colPeakV);
-                
-                handVelocity(tT,setSize*(nOS-1)+sS)=sqrt(((rowPeakV-fieldSize(:,2)/2)*rateConstant)^2 +((colPeakV-fieldSize(:,1)/2)*rateConstant)^2);
-                sim.setElementParameters('hand','velocity',handVelocity(tT,setSize*(nOS-1)+sS));
-                
-                if handVelocity(tT,setSize*(nOS-1)+sS)>0.05 && ~initialLatencyWasMesured
-                    initialLatencyTime(setSize*(nOS-1)+sS)=sim.t;
-                    initialLatencyWasMesured=true;
-                end
-                
-                if handVelocity(tT,setSize*(nOS-1)+sS)<=0.000001 && ~trialIsDone && initialLatencyWasMesured && (handPositionY(tT,setSize*(nOS-1)+sS)<35)
-                    movementTime(setSize*(nOS-1)+sS)= (sim.t) - initialLatencyTime(setSize*(nOS-1)+sS);
-                    totalTime(setSize*(nOS-1)+sS)=sim.t;
-                    trialIsDone=true;
-                    break;
-                end
-            end
-            
-            if gui_flag == true
-                gui.updateVisualizations();
-            end
-            pause(0);
-            
-        end
-        %Small break initilazation
-        
-        sim.setElementParameters('targetImage','currentSelection',breakImage);
-        sim.setElementParameters('hand','positionY',fieldSize(:,2)/2);
-        sim.setElementParameters('hand','positionX',fieldSize(:,1)/2);
-        
-        
-        for bT= 1:breakTime  % It controls colour priming
-            
-            sim.step();
-            
-            if gui_flag == true
-                gui.updateVisualizations();
-            end
-            
-            pause(0);
-        end
-        
-        
-    end
-    
-end
-%%
-reorederedHistory=historyOfOrder(1,:);
-if numberOfSet>1
-    for i=2:numberOfSet
-        reorederedHistory=horzcat(reorederedHistory,historyOfOrder(i,:));
-    end
-end
-
-for sS= 1:numberOfTrial
-    figure(4), subplot(numberOfTrial,2,2*sS-1),imshow(imageNames{1,reorederedHistory(sS)}); hold on, plot(handPositionX(:,sS),handPositionY(:,sS),'*'); hold off;
-    subplot(numberOfTrial,2,2*sS), plot(handVelocity(:,sS));
-end
-
 end

@@ -78,7 +78,6 @@ classdef ModifiedImageLoader < Element
         function obj = init(obj)
             if mod(obj.currentSelection, 1) == 0 && obj.currentSelection > 0 && obj.currentSelection <= numel(obj.fileNames)
                 obj.image = imread(obj.fileNames{obj.currentSelection});
-                obj.size(1)
                 obj.image(:,:,1)=zeros(obj.size(1));
                 obj.image(:,:,2)=zeros(obj.size(1));
                 obj.image(:,:,3)=zeros(obj.size(1));
