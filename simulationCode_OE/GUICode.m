@@ -7,6 +7,9 @@ function GUICode(numberOfSet, breakTime)
     breakTime=10;
     numberOfSet = 1;
 
+%% some changes for demo    
+ 
+
 %Pick the image for target selection
 currentFolder = pwd;
 selpath = uigetdir(pwd);
