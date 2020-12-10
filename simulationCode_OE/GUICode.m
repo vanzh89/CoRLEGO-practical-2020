@@ -24,13 +24,13 @@ currentSelection = 1; %
 %% setting up the simulator
 connectionValue = -2; %Amplitude for connections can be different for each one
 historyDuration = 100;
-samplingRange = [-20, 20];
-samplingResolution = 0.025;
+samplingRange = [-10, 10];
+samplingResolution = 0.05;
 tStimOn=0;
 
 sigmaInhY = 10;
 sigmaInhX = 10;
-amplitudeInh_dv = 1;
+amplitudeInh_dv = 0.8;
 sigmaExcY = 5;
 sigmaExcX = 5;
 amplitudeExc = 5;
