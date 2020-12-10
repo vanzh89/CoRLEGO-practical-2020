@@ -9,7 +9,7 @@ classdef ModifiedImageLoader < Element
     properties (Constant)
         parameters = struct('fileNames', ParameterStatus.Fixed, 'size', ParameterStatus.Fixed, ...
             'currentSelection', ParameterStatus.InitRequired);
-        components = {'image','imageRed','imageGreen','inputForRed','inputForGreen','sumOfRed','sumOfGreen'};
+        components = {'image','imageRed','imageGreen','imageBlue','inputForRed','inputForGreen','inputForBlue','sumOfRed','sumOfGreen','sumOfBlue'};
         defaultOutputComponent = 'image';
     end
     
@@ -24,10 +24,13 @@ classdef ModifiedImageLoader < Element
         image
         imageRed
         imageGreen
+        imageBlue
         inputForRed
         inputForGreen
+        inputForBlue
         sumOfRed
         sumOfGreen
+        sumOfBlue
         
     end
     
@@ -62,15 +65,16 @@ classdef ModifiedImageLoader < Element
             
             obj.imageRed=obj.image(:,:,1);
             obj.imageGreen=obj.image(:,:,2);
+            obj.imageBlue=obj.image(:,:,3);
             obj.sumOfRed=sum(sum(obj.imageRed));
             obj.sumOfGreen=sum(sum(obj.imageGreen));
-            
+            obj.sumOfBlue=sum(sum(obj.imageBlue));
             %Calculate the inputs for the uRed and uGreen
-            Coeff=5.446623093681918e-04;
+            Coeff=-5.446623093681918e-04*((120/obj.size(1))^2);
             
-            obj.inputForGreen=Coeff.*obj.sumOfRed;
-            obj.inputForRed=Coeff.*obj.sumOfGreen;
-            
+            obj.inputForGreen=Coeff.*obj.sumOfGreen;
+            obj.inputForRed=Coeff.*obj.sumOfRed;
+            obj.inputForBlue=Coeff.*obj.sumOfBlue;
         end
         
         
@@ -83,14 +87,16 @@ classdef ModifiedImageLoader < Element
                 obj.image(:,:,3)=zeros(obj.size(1));
                 obj.imageRed=obj.image(:,:,1);
                 obj.imageGreen=obj.image(:,:,2);
+                obj.imageBlue=obj.image(:,:,3);
                 obj.sumOfRed=sum(sum(obj.imageRed));
                 obj.sumOfGreen=sum(sum(obj.imageGreen));
+                obj.sumOfBlue=sum(sum(obj.imageBlue));
                 %Calculate the inputs for the uRed and uGreen
-                Coeff=5.446623093681918e-04;
+                Coeff=-5.446623093681918e-04*((120/obj.size(1))^2);
                 
-                obj.inputForGreen=Coeff.*obj.sumOfRed;
-                obj.inputForRed=Coeff.*obj.sumOfGreen;
-                
+                obj.inputForGreen=Coeff.*obj.sumOfGreen;
+                obj.inputForRed=Coeff.*obj.sumOfRed;
+                obj.inputForBlue=Coeff.*obj.sumOfBlue;
                 
             end
         end

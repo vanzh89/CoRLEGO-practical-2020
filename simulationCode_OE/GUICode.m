@@ -14,10 +14,10 @@
 currentFolder = pwd;
 selpath = uigetdir(pwd);
 %randperm()
-imageNames={'redTargetOnTheLeft.png',...
-    'redTargetInTheMiddle.png','redTargetOnTheRight.png','greenTargetOnTheLeft.png',...
-    'greenTargetInTheMiddle.png','greenTargetOnTheRight.png','NoTargetImage.png'};
-
+% imageNames={'redTargetOnTheLeft.png',...
+%     'redTargetInTheMiddle.png','redTargetOnTheRight.png','greenTargetOnTheLeft.png',...
+%     'greenTargetInTheMiddle.png','greenTargetOnTheRight.png','NoTargetImage.png'};
+imageNames={'RRRG.png','RGRR.png','RGGG.png','RBRR.png','BBGB.png','NoTargetImage.png'};
 fieldSize=[30, 30];
 currentSelection = 1; %
 
@@ -48,8 +48,8 @@ sim.init();
 
 % For tunning, input parameters can be controlled by sliders
 
-sim.addElement(SingleNodeDynamics('nodeRed', 10, -5, 4, 1, 0.2, samplingRange, samplingResolution), 'targetImage','inputForRed');
-sim.addElement(SingleNodeDynamics('nodeGreen', 10, -5, 4, 1, 0.2, samplingRange, samplingResolution), 'targetImage','inputForGreen');
+sim.addElement(SingleNodeDynamics('nodeRed', 10, -5.5, 4, 1, 0.2, samplingRange, samplingResolution), 'targetImage','inputForRed');
+sim.addElement(SingleNodeDynamics('nodeGreen', 10, -5.5, 4, 1, 0.2, samplingRange, samplingResolution), 'targetImage','inputForGreen');
 
 
 sim.addElement(Preprocessing('preprocessing'));
